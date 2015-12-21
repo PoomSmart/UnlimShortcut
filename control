@@ -1,0 +1,8 @@
+Package: org.thebigboss.unlimshortcut
+Name: UnlimShortcut
+Depends: mobilesubstrate, preferenceloader, firmware (>= 9.0)
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Remove app shortcuts limit.
+Author: PoomSmart
+Section: Tweaks
