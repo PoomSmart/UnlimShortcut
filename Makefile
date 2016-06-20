@@ -1,8 +1,9 @@
 GO_EASY_ON_ME = 1
-SDKVERSION = 8.0
-ARCHS = armv7 arm64
+DEBUG = 0
+TARGET = iphone:latest:9.0
+PACKAGE_VERSION = 1.0-3
 
-include theos/makefiles/common.mk
+include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = UnlimShortcut
 UnlimShortcut_FILES = Tweak.xm
