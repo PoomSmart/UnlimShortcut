@@ -191,7 +191,6 @@ static void prefsChanged(CFNotificationCenterRef center, void *observer, CFStrin
 	prefs();
 	dlopen("/Library/MobileSubstrate/DynamicLibraries/Apex.dylib", RTLD_LAZY);
 	dlopen("/Library/MobileSubstrate/DynamicLibraries/Ghosty.dylib", RTLD_LAZY);
-	dlopen("/Library/MobileSubstrate/DynamicLibraries/HOPPN.dylib", RTLD_LAZY);
 	if (isiOS10Up) {
 		%init(iOS10);
 	} else {
