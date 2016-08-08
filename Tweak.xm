@@ -50,13 +50,13 @@ static void prefs()
 	val = prefs[@"CustomLayout"];
 	customLayout = [val boolValue];
 	val = prefs[@"RowHeight"];
-	rowHeight = val && customLayout ? floatVal(val) : 0.8;
+	rowHeight = val && customLayout ? floatVal(val) : 1.0;
 	val = prefs[@"TitleFontSize"];
-	titleFontSize = val && customLayout ? floatVal(val) : 0.8;
+	titleFontSize = val && customLayout ? floatVal(val) : 1.0;
 	val = prefs[@"IconMaxHeight"];
-	iconMaxHeight = val && customLayout ? floatVal(val) : 0.8;
+	iconMaxHeight = val && customLayout ? floatVal(val) : 1.0;
 	val = prefs[@"ContentWidth"];
-	contentWidth = val && customLayout ? floatVal(val) : 0.7;
+	contentWidth = val && customLayout ? floatVal(val) : 1.0;
 }
 
 %group iOS10
@@ -98,7 +98,6 @@ BOOL override = NO;
 }
 
 %end
-
 
 %hook SBUIActionView
 
@@ -164,7 +163,7 @@ BOOL override = NO;
 {
 	if (!unlimitedShortcut)
 		return %orig;
-	NSMutableArray *items = [NSMutableArray array];
+	NSMutableArray *items = [[NSMutableArray array] retain];
 	for (SBSApplicationShortcutItem *item in self.application.staticShortcutItems) {
 		if ([self _canDisplayShortcutItem:item])
 			[items addObject:item];
@@ -173,7 +172,24 @@ BOOL override = NO;
 		if ([self _canDisplayShortcutItem:item])
 			[items addObject:item];
 	}
-	return items;
+	return [items autorelease];
+}
+
+%end
+
+NSUInteger itemCount;
+
+%hook SBApplicationShortcutMenuContentView
+
+- (id)initWithInitialFrame:(CGRect)initialFrame containerBounds:(CGRect)containerBounds orientation:(NSInteger)orientation shortcutItems:(NSArray *)items application:(id)application
+{
+	itemCount = items.count;
+	return %orig;
+}
+
+- (NSInteger)_preferredMenuPositionWithContainerBounds:(CGRect)bounds menuItemCount:(NSUInteger)count
+{
+	return %orig(bounds, itemCount);
 }
 
 %end
